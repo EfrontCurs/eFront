@@ -32,7 +32,6 @@ include_once $path."configuration.php";
  * PEAR and PEAR_Error classes, for error handling
  */
 require_once 'QuickForm.php';
-
 /**
  * Create, validate and process HTML forms
  *

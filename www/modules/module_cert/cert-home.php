@@ -13,14 +13,14 @@ include_once $path."configuration.php";
 	// $baseURL = "http://ita-portal.cis.fiu.edu/";
 	$baseURL = VLAB_LMS_ROOT;
 	// $kcaTheoryURL = "mod/quiz/view-embedded.php?id=10576&username=$username";
-	$kcaTheoryURL = "mod/quiz/view-embedded.php?id=10864&username=$username";
+	$kcaTheoryURL = "mod/quiz/view-embedded-with-encrypted-password.php?id=10864&username=$username";
 	// echo $baseURL . $kcaTheoryURL;
-	$kcaHandsonURL = "mod/quiz/view-embedded.php?id=10578&username=$username";
+	$kcaHandsonURL = "mod/quiz/view-embedded-with-encrypted-password.php?id=10578&username=$username";
 	// echo $baseURL . $kctHandsonURL;
 	// $kctTheoryURL = "mod/quiz/view-embedded.php?id=10834&username=$username";
-	$kctTheoryURL = "mod/quiz/view-embedded.php?id=10863&username=$username";
+	$kctTheoryURL = "mod/quiz/view-embedded-with-encrypted-password.php?id=10863&username=$username";
 	// echo $baseURL . $kctTheoryURL;
-	$kctHandsonURL = "mod/quiz/view-embedded.php?id=10835&username=$username";
+	$kctHandsonURL = "mod/quiz/view-embedded-with-encrypted-password.php?id=10835&username=$username";
 	// echo $baseURL . $kcaHandsonURL;
 	
 	$kcaGranted = array(
@@ -108,7 +108,6 @@ include_once $path."configuration.php";
 <ul>
   <li>For the <a href="<?php echo $baseURL . $kcaTheoryURL; ?>">theory part</a>, you will receive 30 randomly selected multiple-choice or true-false questions that evaluate your familiarity with Kaseya VSA. You have 30 minutes to answer all of the questions. For this part, you have unlimited number of attempts. This means that you can retake the theory test over and over again until you get the perfect score, if desired. Your score will be provided to you immediately after taking the test. The score for this part comprises <strong>30%</strong> of your total score.</li>
   <li>For the <a href="<?php echo $baseURL . $kcaHandsonURL; ?>">hands-on part</a>, you will receive 19 randomly selected tasks from all major topics in your training that you would need to perform within two hours using a blank virtual environment. You have one attempt at the hands-on exam. Once the exam is completed, submit the answer file for grading. Your answer file will be graded typically no longer than 10 business days (two weeks) from the time you took the test. The score for this part comprises<strong> 70% </strong>of your total score.</li>
-  <li><strong>Required</strong>:  Review <a href="http://it-scholars.com/docs/Hands-On-Test-Notes-KU.html" target="_blank">Exam Notes</a> before attempting the hands-on exam.  This document contains important information regarding the exam.</li>
   <p align="center">
     <a class="certButton" href="<?php echo $baseURL . $kcaTheoryURL; ?>">KCA Theory</a>
     <a class="certButton" href="<?php echo $baseURL . $kcaHandsonURL; ?>">KCA Hands-On</a>
@@ -129,7 +128,6 @@ include_once $path."configuration.php";
     <ul>
       <li>For the <a href="<?php echo $baseURL . $kctTheoryURL; ?>">theory part</a>, you will receive 30 randomly selected multiple-choice or true-false questions that evaluate your familiarity with Kaseya VSA. You have 30 minutes to answer all of the questions. For this part, you have unlimited number of attempts. This means that you can retake the theory test over and over again until you get the perfect score, if desired. Your score will be provided to you immediately after taking the test. The score for this part comprises <strong>30%</strong> of your total score.</li>
       <li>For the <a href="<?php echo $baseURL . $kctHandsonURL; ?>">hands-on part</a>, you will receive 19 randomly selected tasks from all major topics in your training that you would need to perform within two hours using a blank virtual environment. You have one attempt at the hands-on exam. Once the exam is completed, submit the answer file for grading. Your answer file will be graded typically no longer than 10 business days (two weeks) from the time you took the test. The score for this part comprises<strong> 70% </strong>of your total score.</li>
-      <li><strong>Required</strong>:  Review <a href="http://it-scholars.com/docs/Hands-On-Test-Notes-KU.html" target="_blank">Exam Notes</a> before attempting the hands-on exam.  This document contains important information regarding the exam.</li>
   <p align="center">
     <a class="certButton" href="<?php echo $baseURL . $kctTheoryURL; ?>">KCT Theory</a>
     <a class="certButton" href="<?php echo $baseURL . $kctHandsonURL; ?>">KCT Hands-On</a>

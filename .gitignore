@@ -5,5 +5,3 @@ libraries/smarty/themes_cache
 www/modules/module_security/checksum_list.txt
 backups/*
 upload/*
-www/modules/module_kaseya_university_workbook/assets
-www/modules/module_kaseya_university_workbook/assets/*

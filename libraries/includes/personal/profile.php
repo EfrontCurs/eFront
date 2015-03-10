@@ -322,19 +322,25 @@ if ($form -> isSubmitted() && $form -> validate()) {
 		// Beging addition
 		$vLab_username 		= $userProperties['login'];
 		$vLab_password 		= $userProperties['password'];
+		// echo "<br/>\$vLab_password: $vLab_password";
 		$vLab_email 		= $userProperties['email'];
 		$vLab_firstname 	= $userProperties['name'];
 		$vLab_lastname 		= $userProperties['surname'];
 		$vLab_timezone 		= $userProperties['timezone'];
 		$vLab_companyname 	= $userProperties['comments'];
 		
-		$vLab_username_urlEncoded 		= rawurlencode($vLab_username);
-		$vLab_password_urlEncoded 		= rawurlencode($vLab_password);
-		$vLab_email_urlEncoded 			= rawurlencode($vLab_email);
-		$vLab_firstname_urlEncoded 		= rawurlencode($vLab_firstname);
-		$vLab_lastname_urlEncoded 		= rawurlencode($vLab_lastname);
-		$vLab_timezone_urlEncoded 		= rawurlencode($vLab_timezone);
-		$vLab_companyname_urlEncoded 	= rawurlencode($vLab_companyname);
+		include(dirname(dirname(__FILE__)) . "/crypt.php");
+		$vLab_encrypted_password = Crypt::encrypt($vLab_password);
+		// echo "<br/>\$vLab_encrypted_password: $vLab_encrypted_password";
+		
+		$vLab_username_urlEncoded 			= rawurlencode($vLab_username);
+		$vLab_encrypted_password_urlEncoded = rawurlencode($vLab_encrypted_password);
+		// echo "<br/>\$vLab_encrypted_password_urlEncoded: $vLab_encrypted_password_urlEncoded";
+		$vLab_email_urlEncoded 				= rawurlencode($vLab_email);
+		$vLab_firstname_urlEncoded 			= rawurlencode($vLab_firstname);
+		$vLab_lastname_urlEncoded 			= rawurlencode($vLab_lastname);
+		$vLab_timezone_urlEncoded 			= rawurlencode($vLab_timezone);
+		$vLab_companyname_urlEncoded 		= rawurlencode($vLab_companyname);
 	
 		$vLab_courseid 		= 123; // Kaseya 7.0 Fundamentals Workshop
 		$vLab_course 		= "Kaseya 7.0 Fundamentals Workshop";
@@ -345,14 +351,15 @@ if ($form -> isSubmitted() && $form -> validate()) {
 		$vLab_resourceType_urlEncoded 	= rawurlencode($vLab_resourceType);
 
 		$vLab_moodleURL = VLAB_LMS_ROOT;
-		// $vLab_moodleURL = "http://localhost/moodle19/";
+		// $vLab_moodleURL = "http://localhost/moodle/";
 		// $vLab_moodleURL = "http://ita-portal.cis.fiu.edu/";
 
 		// auto register	
-		$str = $vLab_moodleURL . "mod/deva/embedded/auto-register.php?efront=1&username=$vLab_username_urlEncoded&password=$vLab_password_urlEncoded&email=$vLab_email_urlEncoded&firstname=$vLab_firstname_urlEncoded&lastname=$vLab_lastname_urlEncoded&timezone=$vLab_timezone_urlEncoded&companyname=$vLab_companyname_urlEncoded";	
-		// echo $str . '<br>';
+		$str = $vLab_moodleURL . "mod/deva/embedded/auto-register-with-encrypted-password.php?efront=1&username=$vLab_username_urlEncoded&encrypted_password=$vLab_encrypted_password_urlEncoded&email=$vLab_email_urlEncoded&firstname=$vLab_firstname_urlEncoded&lastname=$vLab_lastname_urlEncoded&timezone=$vLab_timezone_urlEncoded&companyname=$vLab_companyname_urlEncoded";	
+		// echo "<br/>\$str: $str";
 		$payload = file_get_contents($str);
-		// echo $payload;
+		//echo $payload;
+	
 /*
 		$vLabGranted = array(
 			'FIU'				=> true,
@@ -382,22 +389,26 @@ if ($form -> isSubmitted() && $form -> validate()) {
 		
 		if (in_array($roleTypeName, $vLabEnabledState)) {	
 			// auto enroll
-			$str = $vLab_moodleURL . "mod/deva/embedded/auto-enroll.php?username=$vLab_username_urlEncoded&courseid=$vLab_courseid_urlEncoded";	
+			$str = $vLab_moodleURL . 
+				"mod/deva/embedded/auto-enroll.php?username=$vLab_username_urlEncoded&courseid=$vLab_courseid_urlEncoded";	
 			// echo $str . '<br>';
 			$payload = file_get_contents($str);
 			// echo $payload;
 		
 			// auto login
-			$str = $vLab_moodleURL . "mod/deva/embedded/auto-login.php?username=$vLab_username_urlEncoded";	
+			$str = $vLab_moodleURL . 
+				"mod/deva/embedded/auto-login.php?username=$vLab_username_urlEncoded";	
 			// echo $str . '<br>';
 			$payload = file_get_contents($str);
 			// echo $payload;
 			// End addition by Masoud Sadjadi
 			
 			// auto start vLab
-			$str = $vLab_moodleURL . "mod/deva/embedded/auto-start.php?username=$vLab_username_urlEncoded&course=$vLab_course_urlEncoded&resourceType=$vLab_resourceType_urlEncoded";
-			// echo $str;
-			$payload = file_get_contents($str);
+			if (!empty($vLab_password)) {
+				$str = $vLab_moodleURL . "mod/deva/embedded/auto-start-with-encrypted-password.php?username=$vLab_username_urlEncoded&encrypted_password=$vLab_encrypted_password_urlEncoded&course=$vLab_course_urlEncoded&resourceType=$vLab_resourceType_urlEncoded";
+				// echo $str;
+				$payload = file_get_contents($str);
+			}
 		}
 		// End addition by Masoud Sadjadi
 		
@@ -411,12 +422,14 @@ if ($form -> isSubmitted() && $form -> validate()) {
 			// Beging addition
 			if (in_array($roleTypeName, $vLabSuspendState)) {
 				// Suspend vLab
-				$str = $vLab_moodleURL . "mod/deva/embedded/suspend.php?username=$vLab_username_urlEncoded&courseid=$vLab_courseid_urlEncoded";
+				$str = $vLab_moodleURL . 
+					"mod/deva/embedded/suspend.php?username=$vLab_username_urlEncoded&courseid=$vLab_courseid_urlEncoded";
 				// echo $str;
 				$payload = file_get_contents($str);
 			} else if (in_array($roleTypeName, $vLabDisabledState)) {
 				// auto enroll
-				$str = $vLab_moodleURL . "mod/deva/embedded/auto-unenroll.php?username=$vLab_username_urlEncoded&courseid=$vLab_courseid_urlEncoded";	
+				$str = $vLab_moodleURL . 
+					"mod/deva/embedded/auto-unenroll.php?username=$vLab_username_urlEncoded&courseid=$vLab_courseid_urlEncoded";	
 				// echo $str . '<br>';
 				$payload = file_get_contents($str);
 				// echo $payload;		

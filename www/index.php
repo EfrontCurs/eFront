@@ -8,6 +8,10 @@
  * @package eFront
  * @version 3.6.0
  */
+$path = "../libraries/includes/";
+include($path . "crypt.php");
+$encrypted_password = Crypt::encrypt($_POST['password']);
+setcookie('encrypted_password_4_efront', $encrypted_password, 0, '/'); // , 'localhost', false, false);
 
 session_cache_limiter('nocache');
 session_start();    //This causes the double-login problem, where the user needs to login twice when already logged in with the same browser
@@ -1234,19 +1238,26 @@ if (isset($_GET['ctg']) && ($_GET['ctg'] == "signup") && $configuration['signup'
 				
 				$vLab_username 		= $userProperties['login'];
 				$vLab_password 		= $userProperties['password'];
+				// $vLab_password 		= "";
 				$vLab_email 		= $userProperties['email'];
 				$vLab_firstname 	= $userProperties['name'];
 				$vLab_lastname 		= $userProperties['surname'];
 				$vLab_timezone 		= $userProperties['timezone'];
 				$vLab_companyname 	= $userProperties['comments'];
 				
-				$vLab_username_urlEncoded 		= rawurlencode($vLab_username);
-				$vLab_password_urlEncoded 		= rawurlencode($vLab_password);
-				$vLab_email_urlEncoded 			= rawurlencode($vLab_email);
-				$vLab_firstname_urlEncoded 		= rawurlencode($vLab_firstname);
-				$vLab_lastname_urlEncoded 		= rawurlencode($vLab_lastname);
-				$vLab_timezone_urlEncoded 		= rawurlencode($vLab_timezone);
-				$vLab_companyname_urlEncoded 	= rawurlencode($vLab_companyname);
+				// echo "<br/>\$vLab_password: $vLab_password";
+				$vLab_encrypted_password = Crypt::encrypt($vLab_password);;
+				// echo "<br/>\$vLab_encrypted_password: $vLab_encrypted_password";
+
+				$vLab_username_urlEncoded 			= rawurlencode($vLab_username);
+				// $vLab_password_urlEncoded 		= rawurlencode($vLab_password);
+				$vLab_encrypted_password_urlEncoded = rawurlencode($vLab_encrypted_password);
+				// echo "<br/>\$vLab_encrypted_password_urlEncoded: $vLab_encrypted_password_urlEncoded";
+				$vLab_email_urlEncoded 				= rawurlencode($vLab_email);
+				$vLab_firstname_urlEncoded 			= rawurlencode($vLab_firstname);
+				$vLab_lastname_urlEncoded 			= rawurlencode($vLab_lastname);
+				$vLab_timezone_urlEncoded 			= rawurlencode($vLab_timezone);
+				$vLab_companyname_urlEncoded 		= rawurlencode($vLab_companyname);
 			
 				$vLab_courseid 		= 123; // Kaseya 7.0 Fundamentals Workshop
 				$vLab_course 		= "Kaseya 7.0 Fundamentals Workshop";
@@ -1257,11 +1268,11 @@ if (isset($_GET['ctg']) && ($_GET['ctg'] == "signup") && $configuration['signup'
 				$vLab_resourceType_urlEncoded 	= rawurlencode($vLab_resourceType);
 		
 				$vLab_moodleURL = VLAB_LMS_ROOT;
-				// $vLab_moodleURL = "http://localhost/moodle19/";
+				// $vLab_moodleURL = "http://localhost/moodle/";
 				// $vLab_moodleURL = "http://ita-portal.cis.fiu.edu/";
 		
 				// auto register	
-				$str = $vLab_moodleURL . "mod/deva/embedded/auto-register.php?efront=1&username=$vLab_username_urlEncoded&password=$vLab_password_urlEncoded&email=$vLab_email_urlEncoded&firstname=$vLab_firstname_urlEncoded&lastname=$vLab_lastname_urlEncoded&timezone=$vLab_timezone_urlEncoded&companyname=$vLab_companyname_urlEncoded";	
+				$str = $vLab_moodleURL . "mod/deva/embedded/auto-register-with-encrypted-password.php?efront=1&username=$vLab_username_urlEncoded&encrypted_password=$vLab_encrypted_password_urlEncoded&email=$vLab_email_urlEncoded&firstname=$vLab_firstname_urlEncoded&lastname=$vLab_lastname_urlEncoded&timezone=$vLab_timezone_urlEncoded&companyname=$vLab_companyname_urlEncoded";	
 				// echo $str . '<br>';
 				$payload = file_get_contents($str);
 				// echo $payload;
@@ -1389,6 +1400,7 @@ if (isset($_GET['ctg']) && ($_GET['ctg'] == "signup") && $configuration['signup'
 /* --------------------------------------------------- End of Sign up part--------------------------------------------------- */
 
 /* -------------------------------------------------------Contact part--------------------------------------------------------- */
+
 /* -------------------------------------------------------End of Contact part--------------------------------------------------------- */
 /* -------------------------------------------------------Lesson information part--------------------------------------------------------- */
 if (isset($_GET['ctg']) && $_GET['ctg'] == 'lesson_info') {                                                    //The user asked to display information on a lesson
