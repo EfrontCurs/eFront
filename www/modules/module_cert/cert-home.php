@@ -6,21 +6,34 @@ $path = "../../../libraries/";
 include_once $path."configuration.php";
 
 	$username 	= $_GET["username"]; // username for embedded verions
-	// echo $username;
+	// echo "<br/>\$username=$username";
+	$username_encoded = urlencode($username);
+	// echo "<br/>\$username_encoded=$username_encoded";
+	$encrypted_password = $_COOKIE["encrypted_password_4_efront"];
+	// echo "<br/>\$encrypted_password=$encrypted_password";
+	$encrypted_password_encoded = urlencode($encrypted_password);
+	// echo "<br/>\$encrypted_password_encoded=$encrypted_password_encoded";
+	// exit;
+	
 	$roleTypeName 	= $_GET["roleTypeName"]; // roleTypeName for embedded verions
 	// echo $roleTypeName;
 	// $baseURL = "http://localhost/moodle19/";
 	// $baseURL = "http://ita-portal.cis.fiu.edu/";
 	$baseURL = VLAB_LMS_ROOT;
 	// $kcaTheoryURL = "mod/quiz/view-embedded.php?id=10576&username=$username";
-	$kcaTheoryURL = "mod/quiz/view-embedded-with-encrypted-password.php?id=10864&username=$username";
+	$kcaTheoryURL = 
+		"mod/quiz/view-embedded-with-encrypted-password.php?id=10864" .
+		"&username=$username_encoded&encrypted_password=$encrypted_password_encoded";
 	// echo $baseURL . $kcaTheoryURL;
-	$kcaHandsonURL = "mod/quiz/view-embedded-with-encrypted-password.php?id=10578&username=$username";
+	$kcaHandsonURL = "mod/quiz/view-embedded-with-encrypted-password.php?id=10578" .
+		"&username=$username_encoded&encrypted_password=$encrypted_password_encoded";
 	// echo $baseURL . $kctHandsonURL;
 	// $kctTheoryURL = "mod/quiz/view-embedded.php?id=10834&username=$username";
-	$kctTheoryURL = "mod/quiz/view-embedded-with-encrypted-password.php?id=10863&username=$username";
+	$kctTheoryURL = "mod/quiz/view-embedded-with-encrypted-password.php?id=10863" .
+		"&username=$username_encoded&encrypted_password=$encrypted_password_encoded";
 	// echo $baseURL . $kctTheoryURL;
-	$kctHandsonURL = "mod/quiz/view-embedded-with-encrypted-password.php?id=10835&username=$username";
+	$kctHandsonURL = "mod/quiz/view-embedded-with-encrypted-password.php?id=10835" .
+		"&username=$username_encoded&encrypted_password=$encrypted_password_encoded";
 	// echo $baseURL . $kcaHandsonURL;
 	
 	$kcaGranted = array(
