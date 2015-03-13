@@ -10,9 +10,10 @@
  */
 $path = "../libraries/includes/";
 include($path . "crypt.php");
-$encrypted_password = Crypt::encrypt($_POST['password']);
-setcookie('encrypted_password_4_efront', $encrypted_password, 0, '/'); // , 'localhost', false, false);
-
+if (isset($_POST['password'])) {
+	$encrypted_password = Crypt::encrypt($_POST['password']);
+	setcookie('encrypted_password_4_efront', $encrypted_password, 0, '/'); // , 'localhost', false, false);
+}
 session_cache_limiter('nocache');
 session_start();    //This causes the double-login problem, where the user needs to login twice when already logged in with the same browser
 
